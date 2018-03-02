@@ -1,18 +1,18 @@
 import React from 'react'
+import Account from './Account'
 import ClothingItem from './ClothingItem'
-
+import _ from 'lodash'
 export default class App extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      info:'getting from rails.....',
+      info:'stupid react go to hell.....',
       items: [],
       selectedSize: null,
       selectedBrand: null
     }
   }
-
   componentDidMount(){
     
 
@@ -28,7 +28,6 @@ export default class App extends React.Component {
         'content_type':'application/json'
       }
     })
-    // fetch(apiURL)
       .then(res => res.json())
       .then(resJson => {
         const items = resJson
@@ -88,12 +87,11 @@ export default class App extends React.Component {
     if (!sizes || !items || !brands) {
       return <div></div>
     }
-
     return <div>
       <select name="" id="" onChange={this.onChangeSize.bind(this)}>
       <option value="">Select your size</option>
       {
-        sizes.map(size => <option value={size}>{size}</option>)
+        _.uniq(sizes).map(size => <option value={size}>{size}</option>)
       }
       {/*
       <option value="4">4</option>
@@ -108,18 +106,20 @@ export default class App extends React.Component {
       <select name="" id="" onChange={this.onChangeBrand.bind(this)}>
         <option value="">your favorite brand</option>
         {
-          brands.map(brand => <option value={brand}>{brand}</option>)
+          _.uniq(brands).map(brand => <option value={brand}>{brand}</option>)
         }
       </select> <br />
 
       {
         showItems.map(item =>
           <ClothingItem
+            available={item.available}
             brand={item.brand}
             image={item.image}
             item_type={item.item_type}
             owner_id={item.owner_id}
             size={item.size}
+            id={item.id}
             />
         )
       }
